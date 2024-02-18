@@ -46,6 +46,7 @@ public class AppConfig {
                         //to allow access only from Fronted 
                         cfg.setAllowedOrigins(Arrays.asList("http://localhost:5173/"));
                         cfg.setAllowedOrigins(Arrays.asList("https://flycart.netlify.app/"));
+                        cfg.setAllowedOrigins(Arrays.asList("https://main--flycart.netlify.app/"));
                         //to allow access to all the methods : GET/POST/UPDATE/DELETE/PUT etc.
                         cfg.setAllowedMethods(Collections.singletonList("*"));
                         cfg.setAllowCredentials(true);
