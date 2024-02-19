@@ -23,35 +23,35 @@ import jakarta.servlet.http.HttpServletResponse;
 
 public class JwtValidator extends OncePerRequestFilter {
 
-	@Override
-	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-			throws ServletException, IOException {
-		String jwt=  request.getHeader(JwtConstant.JWT_HEADER);
-		System.out.println("ONCE PER REQUEST FILTER - JWT TOKEN -" +jwt);
-		if(jwt!=null && jwt.startsWith("Bearer")) {
-			
-			jwt=jwt.substring(7);
-			System.out.println("ONCE PER REQUEST FILTER - ONLY -JWT TOKEN -" +jwt);
-			try {
-				SecretKey key = Keys.hmacShaKeyFor(JwtConstant.SECRET_KEY.getBytes());
-				Claims claims = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(jwt).getBody();
-				String email=String.valueOf(claims.get("email"));
-				String authorities = String.valueOf(claims.get("authorities"));
-				System.out.println("JWT VALIDATOR - AUTHORITIES :"+authorities);
-				List<GrantedAuthority> auths = AuthorityUtils.commaSeparatedStringToAuthorityList(authorities);
-				Authentication authentication = new UsernamePasswordAuthenticationToken(email,null, auths);
-				SecurityContextHolder.getContext().setAuthentication(authentication);
-				
-			}catch(Exception e) {
-				
-				throw new BadCredentialsException("INVALID JWT TOKEN -JwtValidator");
-				
-			}
-		}
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+            throws ServletException, IOException {
 
-		System.out.println("SENDING REQUEST AFTER FILTER ::::::::::::");
-		filterChain.doFilter(request, response);
-		
-	}
+        String jwt = request.getHeader(JwtConstant.JWT_HEADER);
+        System.out.println("ONCE PER REQUEST FILTER - JWT TOKEN -" + jwt);
+        if (jwt != null && jwt.startsWith("Bearer")) {
 
+            jwt = jwt.substring(7);
+            System.out.println("ONCE PER REQUEST FILTER - ONLY -JWT TOKEN -" + jwt);
+            try {
+                SecretKey key = Keys.hmacShaKeyFor(JwtConstant.SECRET_KEY.getBytes());
+                Claims claims = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(jwt).getBody();
+                String email = String.valueOf(claims.get("email"));
+                String authorities = String.valueOf(claims.get("authorities"));
+                System.out.println("JWT VALIDATOR - AUTHORITIES :" + authorities);
+                List<GrantedAuthority> auths = AuthorityUtils.commaSeparatedStringToAuthorityList(authorities);
+                Authentication authentication = new UsernamePasswordAuthenticationToken(email, null, auths);
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+
+            } catch (Exception e) {
+                throw new BadCredentialsException("INVALID JWT TOKEN -JwtValidator");
+            }
+        }
+        try {
+            System.out.println("SENDING REQUEST AFTER FILTER ::::::::::::");
+            filterChain.doFilter(request, response);
+        } catch (IOException | ServletException ex) {
+            ex.printStackTrace(); // Handle the exception
+        }
+    }
 }

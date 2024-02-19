@@ -43,6 +43,7 @@ public class RatingServiceImplementaion implements RatingService{
 	                .sum();
 			System.out.println("TOTAL RAINGS Value"+totalRatingsValue);
 			double averageRating =0;
+			
 			if(totalRatings>0)averageRating=(double)totalRatingsValue/totalRatings;
 			System.out.println("Average RAINGS"+averageRating);
 			product.setNumRatings(averageRating);

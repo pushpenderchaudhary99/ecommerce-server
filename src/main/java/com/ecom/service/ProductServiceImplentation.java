@@ -125,7 +125,7 @@ public class ProductServiceImplentation implements ProductService{
 	    if (req.getImageUrl() != null) product.setImageUrl(req.getImageUrl());
 	    if (req.getCategory() != null) product.setCategory(req.getCategory());
 	    if(req.getNumRatings()!=0) product.setNumRatings(req.getNumRatings());
-	   
+	   System.out.println("Product Num Rating"+product.getNumRatings());
 	    // Save the updated product to the repository
 	    product = productRepo.save(product);
 	    

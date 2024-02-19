@@ -49,7 +49,7 @@ public class ProductController {
 		
 		Page<Product> page= productService.getAllProducts(category, color, size, minPrice, maxPrice, minDiscount, sort,stock,pageNumber,pageSize);
 		
-		
+		System.out.println("sending products by category");
 		return new ResponseEntity<Page<Product>>(page,HttpStatus.OK);
 	}
 	@GetMapping("/search")

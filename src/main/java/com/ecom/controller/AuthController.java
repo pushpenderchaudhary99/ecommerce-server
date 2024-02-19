@@ -46,6 +46,7 @@ public class AuthController {
 		if(existingUser!=null) throw new UserException("user already registered with this email");
 	
 	user.setPassword(passwordEncoder.encode(user.getPassword()));
+	user.setRole("USER");
 	User savedUser=userRepo.save(user);
 	Cart cart =cartService.createCart(savedUser);
 	Authentication authentication =new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword());
